@@ -1,5 +1,9 @@
 import { GraphQLError } from "graphql";
 import { prisma } from "../../db/prisma";
+import {
+  validateBookmarkTitle,
+  validateBookmarkUrl,
+} from "../../validation/bookmark";
 
 export const mutationResolvers = {
   Mutation: {
@@ -17,6 +21,42 @@ export const mutationResolvers = {
       return prisma.folder.create({
         data: {
           name,
+        },
+      });
+    },
+
+    createBookmark: async (
+      _parent: unknown,
+      args: {
+        title: string;
+        url: string;
+        tags: string[];
+        folderId: string;
+      },
+    ) => {
+      const title = validateBookmarkTitle(args.title);
+      const url = validateBookmarkUrl(args.url);
+
+      const folder = await prisma.folder.findUnique({
+        where: {
+          id: args.folderId,
+        },
+      });
+
+      if (!folder) {
+        throw new GraphQLError("Folder not found", {
+          extensions: {
+            code: "NOT_FOUND",
+          },
+        });
+      }
+
+      return prisma.bookmark.create({
+        data: {
+          title,
+          url,
+          tags: args.tags,
+          folderId: args.folderId,
         },
       });
     },
