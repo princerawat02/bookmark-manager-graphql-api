@@ -110,31 +110,73 @@ export const mutationResolvers = {
       });
     },
 
-    deleteBookmark: async (
-  _parent: unknown,
-  args: { id: string },
-) => {
-  const bookmark = await prisma.bookmark.findUnique({
-    where: {
-      id: args.id,
-    },
-  });
+    deleteBookmark: async (_parent: unknown, args: { id: string }) => {
+      const bookmark = await prisma.bookmark.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
 
-  if (!bookmark) {
-    throw new GraphQLError("Bookmark not found", {
-      extensions: {
-        code: "NOT_FOUND",
+      if (!bookmark) {
+        throw new GraphQLError("Bookmark not found", {
+          extensions: {
+            code: "NOT_FOUND",
+          },
+        });
+      }
+
+      await prisma.bookmark.delete({
+        where: {
+          id: args.id,
+        },
+      });
+
+      return true;
+    },
+
+    moveBookmark: async (
+      _parent: unknown,
+      args: {
+        id: string;
+        folderId: string;
       },
-    });
-  }
+    ) => {
+      const bookmark = await prisma.bookmark.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
 
-  await prisma.bookmark.delete({
-    where: {
-      id: args.id,
+      if (!bookmark) {
+        throw new GraphQLError("Bookmark not found", {
+          extensions: {
+            code: "NOT_FOUND",
+          },
+        });
+      }
+
+      const folder = await prisma.folder.findUnique({
+        where: {
+          id: args.folderId,
+        },
+      });
+
+      if (!folder) {
+        throw new GraphQLError("Folder not found", {
+          extensions: {
+            code: "NOT_FOUND",
+          },
+        });
+      }
+
+      return prisma.bookmark.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          folderId: args.folderId,
+        },
+      });
     },
-  });
-
-  return true;
-},
   },
 };
