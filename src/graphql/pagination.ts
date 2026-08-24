@@ -1,3 +1,5 @@
+import { GraphQLError } from "graphql";
+
 type BookmarkCursor = {
   createdAt: string;
   id: string;
@@ -29,6 +31,10 @@ export function decodeCursor(cursor: string): BookmarkCursor {
       id: decoded.id,
     };
   } catch {
-    throw new Error("Invalid pagination cursor");
+    throw new GraphQLError("Invalid pagination cursor", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
   }
 }
