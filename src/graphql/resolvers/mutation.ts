@@ -109,5 +109,32 @@ export const mutationResolvers = {
         data,
       });
     },
+
+    deleteBookmark: async (
+  _parent: unknown,
+  args: { id: string },
+) => {
+  const bookmark = await prisma.bookmark.findUnique({
+    where: {
+      id: args.id,
+    },
+  });
+
+  if (!bookmark) {
+    throw new GraphQLError("Bookmark not found", {
+      extensions: {
+        code: "NOT_FOUND",
+      },
+    });
+  }
+
+  await prisma.bookmark.delete({
+    where: {
+      id: args.id,
+    },
+  });
+
+  return true;
+},
   },
 };
