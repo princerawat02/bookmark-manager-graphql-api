@@ -1,6 +1,7 @@
 import { createYoga, createSchema } from "graphql-yoga";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { folderResolvers } from "./graphql/resolvers/folder";
 
 const typeDefs = readFileSync(
   resolve(import.meta.dir, "graphql/schema.graphql"),
@@ -10,7 +11,7 @@ const typeDefs = readFileSync(
 const schema = createSchema({
   typeDefs,
   resolvers: {
-    Query: {},
+   ...folderResolvers,
     Mutation: {},
   },
 });
