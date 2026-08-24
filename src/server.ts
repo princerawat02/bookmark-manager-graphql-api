@@ -13,9 +13,18 @@ const typeDefs = readFileSync(
 const schema = createSchema({
   typeDefs,
   resolvers: {
-   ...folderResolvers,
-   ...mutationResolvers,
-   ...bookmarkResolvers
+    Query: {
+      ...folderResolvers.Query,
+      ...bookmarkResolvers.Query,
+    },
+
+    Mutation: {
+      ...mutationResolvers.Mutation,
+    },
+
+    Folder: {
+      ...folderResolvers.Folder,
+    },
   },
 });
 
