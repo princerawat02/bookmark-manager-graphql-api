@@ -1,27 +1,17 @@
 {
   "name": "bookmark-manager",
-  "version": "1.0.0",
-  "private": true,
+  "module": "index.ts",
   "type": "module",
-  "scripts": {
-    "dev": "bun run src/server.ts",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "gendb": "prisma generate",
-    "migrate": "prisma migrate dev",
-    "start": "bun run src/server.ts"
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
   },
   "dependencies": {
-    "@prisma/client": "^6.14.0",
-    "graphql": "^16.11.0",
-    "graphql-yoga": "^5.15.0",
-    "zod": "^4.0.17"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.2.20",
-    "prisma": "^6.14.0",
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
+    "@prisma/client": "^7.9.1",
+    "graphql": "^17.0.2",
+    "graphql-yoga": "^5.22.0"
   }
 }
