@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { folderResolvers } from "./graphql/resolvers/folder";
 import { mutationResolvers } from "./graphql/resolvers/mutation";
+import { bookmarkResolvers } from "./graphql/resolvers/bookmark";
 
 const typeDefs = readFileSync(
   resolve(import.meta.dir, "graphql/schema.graphql"),
@@ -14,6 +15,7 @@ const schema = createSchema({
   resolvers: {
    ...folderResolvers,
    ...mutationResolvers,
+   ...bookmarkResolvers
   },
 });
 
