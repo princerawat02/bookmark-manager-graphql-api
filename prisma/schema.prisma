@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Folder {
+  id        String     @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime   @default(now())
+  bookmarks Bookmark[]
+
+  @@index([createdAt])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  url       String
+  tags      String[]
+  folderId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Restrict)
+
+  @@index([folderId])
+  @@index([createdAt, id])
+}
