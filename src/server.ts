@@ -10,9 +10,8 @@ const typeDefs = readFileSync(
 const schema = createSchema({
   typeDefs,
   resolvers: {
-    Query: {
-      health: () => "OK",
-    },
+    Query: {},
+    Mutation: {},
   },
 });
 
