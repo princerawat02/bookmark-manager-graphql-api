@@ -14,6 +14,12 @@ type Bookmark {
   createdAt: String!
 }
 
+type BookmarkConnection {
+  items: [Bookmark!]!
+  nextCursor: String
+  hasNextPage: Boolean!
+}
+
 type Query {
   folders: [Folder!]!
   folder(id: ID!): Folder
@@ -23,12 +29,6 @@ type Query {
     take: Int
     cursor: String
   ): BookmarkConnection!
-}
-
-type BookmarkConnection {
-  items: [Bookmark!]!
-  nextCursor: String
-  hasNextPage: Boolean!
 }
 
 type Mutation {
